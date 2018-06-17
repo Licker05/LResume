@@ -3,7 +3,7 @@
 //import com.nowcoder.dao.CommentDAO;
 //import com.nowcoder.dao.LoginTicketDAO;
 //import com.nowcoder.dao.NewsDAO;
-//import com.nowcoder.dao.UserDAO;
+//import UserDAO;
 //import com.nowcoder.model.*;
 //import org.junit.Assert;
 //import org.junit.Test;
