@@ -59,12 +59,15 @@ public class LoginController {
                       @RequestParam("email") String email,
                       HttpServletResponse response){
         Map<String, Object> map = userService.register(username, password,cellphone,email);
-        if((int)map.get("RegCode")==1){
-            return JSONUtil.getJSONString(0,"注册成功");
+        if(!map.containsKey("msg")){
+            if((int)map.get("RegCode")==1){
+                return JSONUtil.getJSONString(0,"success");
+            }else{
+                return JSONUtil.getJSONString(-1,map.get("msg").toString());
+            }
         }else{
-            return JSONUtil.getJSONString(-1,"注册失败");
+            return JSONUtil.getJSONString(-1,map.get("msg").toString());
         }
-
     }
     @RequestMapping(path = {"/logout"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String logout(@CookieValue("ticket") String ticket) {

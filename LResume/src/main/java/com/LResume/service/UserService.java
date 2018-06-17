@@ -21,26 +21,29 @@ public class UserService {
     public Map<String, Object> register(String username, String password,String cellphone,String email) {
         Map<String, Object> map = new HashMap<String, Object>();
         if (StringUtils.isBlank(username)) {
-            map.put("msgname", "用户名不能为空");
+            map.put("msg", "用户名不能为空");
             return map;
         }
 
         if (StringUtils.isBlank(password)) {
-            map.put("msgpwd", "密码不能为空");
+            map.put("msg", "密码不能为空");
             return map;
         }
         if(username.length()<6){
-            map.put("msgname","用户名必须大于等于6位");
+            map.put("msg","用户名必须大于等于6位");
+            return map;
+        }
+        if(username.length()>16){
+            map.put("msg","用户名必须小于等于16位");
             return map;
         }
         if(password.length()<6){
-            map.put("msgpwd","密码必须大于6位");
+            map.put("msg","密码必须大于6位");
             return map;
         }
         User user = userDAO.selectByName(username);
-
         if (user != null) {
-            map.put("msgname", "用户名已经被注册");
+            map.put("msg", "用户名已经被注册");
             return map;
         }
 
@@ -53,7 +56,6 @@ public class UserService {
         user.setPassword(JSONUtil.MD5(password+user.getSalt()));
         user.setPhone(cellphone);
         user.setEmail(email);
-
         String ticket = addLoginTicket(user.getId());
         map.put("ticket", ticket);
         if(userDAO.addUser(user)!=0){
