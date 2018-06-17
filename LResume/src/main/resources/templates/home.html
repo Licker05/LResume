@@ -25,17 +25,24 @@
             </li>
         </ul>
         <ul class="layui-nav layui-layout-right">
+            #if ($!user)
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    贤心
+                    <img src="$!{user.headurl}" class="layui-nav-img">
+                    $!{user.name}
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">退了</a></li>
+            #end
+
+            #if ($user)
+            <li class="layui-nav-item"><a href="logout">注销</a></li>
+            #else
+            <li class="layui-nav-item"><a href="login">登录</a></li>
+            #end
         </ul>
     </div>
 

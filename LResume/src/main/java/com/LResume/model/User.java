@@ -1,6 +1,7 @@
 package com.LResume.model;
 
 public class User {
+
     public int getId() {
         return id;
     }
@@ -33,12 +34,12 @@ public class User {
         this.salt = salt;
     }
 
-    public String getHead_url() {
-        return head_url;
+    public String getHeadurl() {
+        return headurl;
     }
 
-    public void setHead_url(String head_url) {
-        this.head_url = head_url;
+    public void setHeadurl(String headurl) {
+        this.headurl = headurl;
     }
 
     public String getPhone() {
@@ -61,7 +62,7 @@ public class User {
     private String name;
     private String password;
     private String salt;
-    private String head_url;
+    private String headurl;
     private String phone;
     private String email;
 

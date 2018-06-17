@@ -95,7 +95,7 @@
                 if(jsonobject.code===-1){
                     layer.msg("服务器错误");
                 }
-                else if(jsonobject==undefined || jsonobject.code!==1){
+                else if(jsonobject==undefined || jsonobject.code!==0){
                     layer.msg("注册失败,请检查");
                 }else{
                     layer.msg('注册成功', {

@@ -1,5 +1,7 @@
 package com.LResume.controller;
 
+import com.LResume.model.HostHolder;
+import com.LResume.model.ViewObject;
 import com.LResume.service.UserService;
 import com.LResume.utils.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,37 +14,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class HomeController {
     @Autowired
     UserService userService;
-    @RequestMapping(path={"/"},method = {RequestMethod.GET,RequestMethod.POST})
-    public String home(){
+    @Autowired
+    HostHolder hostHolder;
+    @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET, RequestMethod.POST})
+    public String index(Model model,
+                        @RequestParam(value = "pop", defaultValue = "0") int pop) {
+        //model.addAttribute("user", getUser());
+        if (hostHolder.getUser() != null) {
+            pop = 0;
+        }
+        model.addAttribute("pop", pop);
         return "home";
     }
-    @RequestMapping(path={"/login"},method = {RequestMethod.GET,RequestMethod.POST})
-    public String login(){
-        return "login";
-    }
-    @RequestMapping(path={"/register"},method = {RequestMethod.GET,RequestMethod.POST})
-    public String register(){
-        return "register";
-    }
-    @RequestMapping(path={"/reg"},method = {RequestMethod.GET,RequestMethod.POST})
-    @ResponseBody
-    public String reg(Model model, @RequestParam("username") String username,
-                           @RequestParam("password") String password,
-                           @RequestParam("cellphone") String cellphone,
-                           @RequestParam("email") String email,
-                           HttpServletResponse response){
-        Map<String, Object> map = userService.register(username, password,cellphone,email);
-        if((int)map.get("RegCode")==1){
-            return JSONUtil.getJSONString(1,"注册成功");
-        }else{
-            return JSONUtil.getJSONString(-1,"注册失败");
-        }
 
-    }
 }
