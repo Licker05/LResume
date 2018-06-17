@@ -91,8 +91,11 @@
             success:function(data){
 
                 var jsonobject = JSON.parse(data);
-                layer.msg(jsonobject.code);
-                if(jsonobject==undefined || jsonobject.code!==1){
+                //layer.msg(jsonobject.code);
+                if(jsonobject.code===-1){
+                    layer.msg("服务器错误");
+                }
+                else if(jsonobject==undefined || jsonobject.code!==1){
                     layer.msg("登录失败,请检查");
                 }else{
                     layer.msg('登入成功', {

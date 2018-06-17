@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -35,10 +37,12 @@ public class HomeController {
                            @RequestParam("cellphone") String cellphone,
                            @RequestParam("email") String email,
                            HttpServletResponse response){
-        System.out.println(username);
-        System.out.println(password);
-        System.out.println(cellphone);
-        System.out.println(email);
-        return JSONUtil.getJSONString(1,"注册成功");
+        Map<String, Object> map = userService.register(username, password,cellphone,email);
+        if((int)map.get("RegCode")==1){
+            return JSONUtil.getJSONString(1,"注册成功");
+        }else{
+            return JSONUtil.getJSONString(-1,"注册失败");
+        }
+
     }
 }

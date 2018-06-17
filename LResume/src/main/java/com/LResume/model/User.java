@@ -1,15 +1,6 @@
 package com.LResume.model;
 
 public class User {
-
-    private int id;
-    private String name;
-    private String password;
-    private String salt;
-    private String head_url;
-    private String phone;
-    private String email;
-
     public int getId() {
         return id;
     }
@@ -65,4 +56,15 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    private int id;
+    private String name;
+    private String password;
+    private String salt;
+    private String head_url;
+    private String phone;
+    private String email;
+
+
+
 }
