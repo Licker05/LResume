@@ -22,8 +22,8 @@ public class ToutiaoWebConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(passportInterceptor);
-//        registry.addInterceptor(loginRequiredInterceptor).
-//                addPathPatterns("/msg/*").addPathPatterns("/like").addPathPatterns("/dislike");
+        registry.addInterceptor(loginRequiredInterceptor).
+                addPathPatterns("/user/info/").addPathPatterns("/user/info/");
         super.addInterceptors(registry);
     }
 }

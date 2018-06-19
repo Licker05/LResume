@@ -2,7 +2,9 @@ package com.LResume.service;
 
 import com.LResume.dao.LoginTicketDAO;
 import com.LResume.dao.UserDAO;
+import com.LResume.dao.UserInfoDAO;
 import com.LResume.model.LoginTicket;
+import com.LResume.model.UserInfo;
 import com.LResume.utils.JSONUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,8 @@ public class UserService {
     UserDAO userDAO;
     @Autowired
     LoginTicketDAO loginTicketDAO;
+    @Autowired
+    UserInfoDAO userInfoDAO;
     public Map<String, Object> register(String username, String password,String cellphone,String email) {
         Map<String, Object> map = new HashMap<String, Object>();
         if (StringUtils.isBlank(username)) {
@@ -56,13 +60,13 @@ public class UserService {
         user.setPassword(JSONUtil.MD5(password+user.getSalt()));
         user.setPhone(cellphone);
         user.setEmail(email);
-        String ticket = addLoginTicket(user.getId());
-        map.put("ticket", ticket);
+
         if(userDAO.addUser(user)!=0){
             map.put("RegCode",1);
         }else{
             map.put("RegCode",0);
         }
+        addUserInfo(user.getName(),user.getId());
         return map;
     }
     public Map<String, Object> login(String username, String password) {
@@ -102,7 +106,14 @@ public class UserService {
         loginTicketDAO.addTicket(ticket);
         return ticket.getTicket();
     }
-
+    private void addUserInfo(String nickname,int userId) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserId(userId);
+        userInfo.setNickname(nickname);
+        userInfo.setSex("男");
+        userInfo.setRemark("暂无备注");
+        userInfoDAO.addUserInfo(userInfo);
+    }
     public User getUserById(int id) {
         return userDAO.selectById(id);
     }
