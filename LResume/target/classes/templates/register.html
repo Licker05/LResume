@@ -128,17 +128,18 @@
             if(!field.agreement){
                 return layer.msg('你必须同意用户协议才能注册');
             }
-
+            register(field);
+            return false;
             //请求接口
-            window.callback = function(res) {
-                console.log(res)
-                // res（未通过验证）= {ret: 1, ticket: null}
-                // res（验证成功） = {ret: 0, ticket: "String", randstr: "String"}
-                if (res.ret == 0) {
-                    register(field);
-                    return false;
-                }
-            }
+            // window.callback = function(res) {
+            //     console.log(res)
+            //     // res（未通过验证）= {ret: 1, ticket: null}
+            //     // res（验证成功） = {ret: 0, ticket: "String", randstr: "String"}
+            //     if (res.ret == 0) {
+            //
+            //         return false;
+            //     }
+            // }
         });
         //各种基于事件的操作，下面会有进一步介绍
     });
