@@ -2,9 +2,11 @@ package com.LResume.interceptor;
 
 import com.LResume.dao.LoginTicketDAO;
 import com.LResume.dao.UserDAO;
+import com.LResume.dao.UserInfoDAO;
 import com.LResume.model.HostHolder;
 import com.LResume.model.LoginTicket;
 import com.LResume.model.User;
+import com.LResume.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -26,6 +28,8 @@ public class PassportInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private UserInfoDAO userInfoDAO;
 
     @Autowired
     private HostHolder hostHolder;
@@ -57,8 +61,10 @@ public class PassportInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
         if (modelAndView != null && hostHolder.getUser() != null) {
-            System.out.println(hostHolder.getUser().getHeadurl());
-            System.out.println(hostHolder.getUser());
+            int userid = hostHolder.getUser().getId();
+            UserInfo userInfo=userInfoDAO.selectByUserId(userid);
+
+            modelAndView.addObject("userinfo",userInfo);
             modelAndView.addObject("user", hostHolder.getUser());
         }
     }

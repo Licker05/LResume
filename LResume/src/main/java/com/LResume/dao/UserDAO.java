@@ -24,4 +24,7 @@ public interface UserDAO {
 
     @Delete({"delete from ", TABLE_NAME, " where id=#{id}"})
     void deleteById(int id);
+
+    @Update({"update ",TABLE_NAME," set headurl=#{headurl},phone=#{phone},email=#{email} where name=#{name}"})
+    void updateUser(User user);
 }

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="/css/layui.css">
     <link rel="stylesheet" href="/css/admin.css">
-
+    <script src="/jquery.js"></script>
 </head>
 <body>
 
@@ -30,7 +30,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">昵称</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="nickname" value="$!{user.name}" lay-verify="nickname" autocomplete="off" maxlength="10" placeholder="请输入昵称" class="layui-input">
+                                <input type="text" name="nickname" value="$!{userinfo.nickname}" lay-verify="nickname" autocomplete="off" maxlength="10" placeholder="请输入昵称" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -45,7 +45,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">头像</label>
                             <div class="layui-input-inline">
-                                <input name="avatar" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址" value="http://cdn.layui.com/avatar/168.jpg" class="layui-input">
+                                <input name="avatar" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址" value="$!{user.headurl}" class="layui-input">
                             </div>
                             <div class="layui-input-inline layui-btn-container" style="width: auto;">
                                 <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
@@ -57,19 +57,19 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">手机</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="cellphone" value="" lay-verify="phone" autocomplete="off" class="layui-input">
+                                <input type="text" name="cellphone" value="$!{user.phone}" lay-verify="phone" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">邮箱</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="email" value="" lay-verify="email" autocomplete="off" class="layui-input">
+                                <input type="text" name="email" value="$!{user.email}" lay-verify="email" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item layui-form-text">
                             <label class="layui-form-label">备注</label>
                             <div class="layui-input-block">
-                                <textarea name="remarks" maxlength="140" placeholder="请输入内容,不超过140个字" class="layui-textarea"></textarea>
+                                <textarea id="remarks" name="remarks" maxlength="140" placeholder="请输入内容,不超过140个字" class="layui-textarea"></textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -88,13 +88,47 @@
 
 <script src="/layui.js"></script>
 <script>
-    layui.use('form',function(){
-        // var form = layui.form;
-        // form.on('submit(*)',function (data) {
-        //     layer.msg(JSON.stringify(data.field));
-        //     return false;
-        // })
-    })
+    document.getElementById("remarks").value="$!{userinfo.remark}";
+    function inform(data) {
+        $.ajax({
+            url:"/inform",
+            data:{username:$.trim(data.username),
+                nickname:$.trim(data.nickname),
+                sex:$.trim(data.sex),
+                headurl:$.trim(data.avatar),
+                cellphone:$.trim(data.cellphone),
+                email:$.trim(data.email),
+                remark:$.trim(data.remarks)
+            },
+            type:"post",
+            success:function (data) {
+                var ajson =JSON.parse(data);
+                if(ajson.code===1){
+                    layer.msg(ajson.msg);
+                }else if(ajson==undefined || ajson.code!==0){
+                    layer.msg("信息错误，请重新输入。");
+                }else{
+                    layer.msg('修改成功', {
+                        offset: '15px'
+                        ,icon: 1
+                        ,time: 1000
+                    }, function(){
+                        location.href = '/'; //后台主页
+                    });
+                }
+            }
+        })
+    }
+</script>
+<script>
+layui.use('form',function(){
+    var form = layui.form;
+    form.on('submit(setmyinfo)',function (obj) {
+        var as= obj.field;
+        inform(as);
+        return false;
+    });
+});
 </script>
 </body>
 </html>
