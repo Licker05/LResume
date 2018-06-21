@@ -19,7 +19,7 @@
                 <div class="layui-card-header">设置我的资料</div>
                 <div class="layui-card-body" pad15>
 
-                    <div class="layui-form" lay-filter="">
+                    <div id="uploadForm" class="layui-form" lay-filter="">
                         <div class="layui-form-item">
                             <label class="layui-form-label">用户名</label>
                             <div class="layui-input-inline">
@@ -48,10 +48,11 @@
                                 <input name="avatar" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址" value="$!{user.headurl}" class="layui-input">
                             </div>
                             <div class="layui-input-inline layui-btn-container" style="width: auto;">
-                                <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
-                                    <i class="layui-icon">&#xe67c;</i>上传图片
+                                <button onclick="f.click();" type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
+                                    <i class="layui-icon">&#xe67c;</i>上传头像
                                 </button>
-                                <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button >
+                                <input type="file" id="f" name="f" onchange="upload(this);" style="display:none"/>
+                                <button class="layui-btn layui-btn-primary" onclick="lookImage();" layadmin-event="avartatPreview">查看头像</button >
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -88,7 +89,43 @@
 
 <script src="/layui.js"></script>
 <script>
+    function lookImage(){
+        window.open(document.getElementById("LAY_avatarSrc").value);
+    }
     document.getElementById("remarks").value="$!{userinfo.remark}";
+    function upload(){
+        var fileM=document.getElementById("f");
+        var fileObj=fileM.files[0];
+        //创建formdata对象，formData用来存储表单的数据，表单数据时以键值对形式存储的。
+        var formData=new FormData();
+        formData.append('file',fileObj);
+        $.ajax({
+            url:"/uploadImage/",
+            data:formData,
+            type:"post",
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success:function (data) {
+                var ajson =JSON.parse(data);
+                if(ajson.code===1){
+                    layer.msg(ajson.msg);
+                }else if(ajson==undefined || ajson.code!==0){
+                    layer.msg("上次错误，请重新上次。");
+                }else{
+                    layer.msg('上传成功', {
+                        offset: '15px'
+                        ,icon: 1
+                        ,time: 1000
+                    }, function(){
+                        document.getElementById("LAY_avatarSrc").value=ajson.msg;
+                    });
+
+                }
+            }
+        })
+    }
     function inform(data) {
         $.ajax({
             url:"/inform",
