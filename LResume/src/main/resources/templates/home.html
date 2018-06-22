@@ -62,7 +62,7 @@
     <div class="layui-body">
         <div class="layui-tab" lay-filter="docDemoTabBrief" lay-allowClose="true">
             <ul class="layui-tab-title" id="title">
-                <li lay-id="title1" class="layui-this">前端求职简历</li>
+                <li lay-id="page1" class="layui-this">前端求职简历</li>
             </ul>
             <div class="layui-tab-content" id="show">
                 <div class="layui-tab-item layui-show">
@@ -82,12 +82,33 @@
         var element = layui.element;
         var form = layui.form;
         element.on('nav(test)', function(elem){
-            element.tabAdd('docDemoTabBrief', {
-                title: $(this).html()
-                ,content: $('#frame').html() //支持传入html
-                ,id: $(this).attr("id")
-            });
+            var dataid = $(this);
+            if ($(".layui-tab-title li[lay-id]").length <= 0) {
+                element.tabAdd('docDemoTabBrief', {
+                    title: $(this).html()
+                    , content: $('#frame').html() //支持传入html
+                    , id: $(this).attr("id")
+                });
+            }else{
+                var isData = false;
+                $.each($(".layui-tab-title li[lay-id]"), function () {
+                    //如果点击左侧菜单栏所传入的id 在右侧tab项中的lay-id属性可以找到，则说明该tab项已经打开
+                    if ($(this).attr("lay-id") == dataid.attr("id")) {
+                        isData = true;
+                    }
+                })
+                if (isData == false) {
+                    //标志为false 新增一个tab项
+                    element.tabAdd('docDemoTabBrief', {
+                        title: $(this).html()
+                        ,content: $('#frame').html() //支持传入html
+                        ,id: $(this).attr("id")
+                    });
+                }
+            }
+            element.tabChange('docDemoTabBrief', $(this).attr("id"));
         });
+
         form.on('submit(formDemo)', function (data) {
             layer.msg(JSON.stringify(data.field));
             return false;
@@ -95,7 +116,7 @@
     });
 </script>
 <script id="frame" type="text/html">
-    <div class="layui-this layui-tab-item layui-show" lay-id="1">
+    <div class="layui-tab-item layui-show" lay-id="1">
         <iframe src="form.html" frameborder="0" class="layadmin-iframe">
         </iframe>
     </div>
