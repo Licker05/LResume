@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +16,7 @@
             bottom: 0;
         }
     </style>
+    <script src="layui/lay/modules/jquery.js"></script>
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">
@@ -43,18 +43,17 @@
         </ul>
         #end
     </div>
-
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">所有简历</a>
                     <dl class="layui-nav-child" id="page">
-                        <dd><a href="javascript:;" id="page1" onclick="c(1,'前端求职简历')">前端求职简历</a></dd>
-                        <dd><a href="javascript:;" id="page2" onclick="c(2,'java WEB求职简历')">java WEB求职简历</a></dd>
-                        <dd><a href="javascript:;" id="page3" onclick="c(3,'Android求职简历')">Android求职简历</a></dd>
-                        <dd><a href="javascript:;" id="page4" onclick="c(4,'全栈求职简历')">全栈求职简历</a></dd>
-                        <dd><a href="javascript:;" id="page5" onclick="c(5,'PHP求职简历')">PHP求职简历</a></dd>
+                        <dd><a href="javascript:;" class="job-click" id="page1">前端求职简历</a></dd>
+                        <dd><a href="javascript:;" class="job-click" id="page2">java WEB求职简历</a></dd>
+                        <dd><a href="javascript:;" class="job-click" id="page3">Android求职简历</a></dd>
+                        <dd><a href="javascript:;" class="job-click" id="page4" >全栈求职简历</a></dd>
+                        <dd><a href="javascript:;" class="job-click" id="page5">PHP求职简历</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -64,79 +63,42 @@
         <div class="layui-tab" lay-filter="docDemoTabBrief" lay-allowClose="true">
             <ul class="layui-tab-title" id="title">
                 <li lay-id="title1" class="layui-this">前端求职简历</li>
-
             </ul>
             <div class="layui-tab-content" id="show">
                 <div class="layui-tab-item layui-show">
-                    <iframe src="form" lay-id="tab1" frameborder="0" class="layadmin-iframe"></iframe>
+                    <iframe src="form.html" lay-id="tab1" frameborder="0" class="layadmin-iframe"></iframe>
                 </div>
             </div>
         </div>
     </div>
-
-
     <div class="layui-footer">
         <!-- 底部固定区域 -->
         © licker
     </div>
 </div>
-<script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="./jquery.js"></script>
 <script>
-    //JavaScript代码区域
     layui.use(['element', 'form'], function () {
         var element = layui.element;
         var form = layui.form;
+        element.on('nav(test)', function(elem){
+            element.tabAdd('docDemoTabBrief', {
+                title: $(this).html()
+                ,content: $('#frame').html() //支持传入html
+                ,id: $(this).attr("id")
+            });
+        });
         form.on('submit(formDemo)', function (data) {
             layer.msg(JSON.stringify(data.field));
             return false;
         });
-
     });
 </script>
-<script type="text/javascript">
-    layui.use('element', function(){
-        var element = layui.element;
-        //一些事件监听
-        element.on('nav(test)', function(elem){
-            console.log(elem); //得到当前点击的DOM对象
-        });
-    });
-    function c(id, text) {
-        // layui.use('element', function(){
-        //     var dataid = $(this);
-        //
-        //     //这时会判断右侧.layui-tab-title属性下的有lay-id属性的li的数目，即已经打开的tab项数目
-        //     if ($(".layui-tab-title li[lay-id]").length <= 0) {
-        //         //如果比零小，则直接打开新的tab项
-        //         active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"),dataid.attr("data-title"));
-        //     } else {
-        //         //否则判断该tab项是否以及存在
-        //
-        //         var isData = false; //初始化一个标志，为false说明未打开该tab项 为true则说明已有
-        //         $.each($(".layui-tab-title li[lay-id]"), function () {
-        //             //如果点击左侧菜单栏所传入的id 在右侧tab项中的lay-id属性可以找到，则说明该tab项已经打开
-        //             if ($(this).attr("lay-id") == dataid.attr("data-id")) {
-        //                 isData = true;
-        //             }
-        //         })
-        //         if (isData == false) {
-        //             //标志为false 新增一个tab项
-        //             active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"),dataid.attr("data-title"));
-        //         }
-        //     }
-        //     //最后不管是否新增tab，最后都转到要打开的选项页面上
-        //     active.tabChange(dataid.attr("data-id"));
-              var element = layui.element;
-              //一些事件监听
-                element.tabAdd('docDemoTabBrief', {
-                  title: text
-                  ,content: '<div class="layui-this layui-tab-item layui-show" lay-id=\''+id+'\'><iframe src="form" frameborder="0" class="layadmin-iframe"></iframe></div>' //支持传入html
-                  ,id: 'title'+id
-                });
-            // });
-        }
+<script id="frame" type="text/html">
+    <div class="layui-this layui-tab-item layui-show" lay-id="1">
+        <iframe src="form.html" frameborder="0" class="layadmin-iframe">
+        </iframe>
+    </div>
 </script>
-
-
 </body>
 </html>
