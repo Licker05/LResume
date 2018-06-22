@@ -1,95 +1,142 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>layout 后台大布局 - Layui</title>
-    <link rel="stylesheet" href="/css/layui.css">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./css/layui.css">
+    <script src="./layui.js"></script>
+    <style type="text/css">
+        .layadmin-iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 68px;
+            right: 0;
+            bottom: 0;
+        }
+    </style>
 </head>
-<body class="layui-layout-body">
+<body>
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">layui 后台布局</div>
+        <div class="layui-logo">个人简历系统后台</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
-        <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href="">控制台</a></li>
-            <li class="layui-nav-item"><a href="">商品管理</a></li>
-            <li class="layui-nav-item"><a href="">用户</a></li>
-            <li class="layui-nav-item">
-                <a href="/user/info/$!{user.id}">其它系统</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">邮件管理</a></dd>
-                    <dd><a href="">消息管理</a></dd>
-                    <dd><a href="">授权管理</a></dd>
-                </dl>
-            </li>
-        </ul>
+        #if ($user)
         <ul class="layui-nav layui-layout-right">
-            #if ($!user)
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="$!{user.headurl}" class="layui-nav-img">
-                    $!{userinfo.nickname}
+                    $!{user.name}
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">基本资料</a></dd>
-                    <dd><a href="javascript:;">安全设置</a></dd>
+                    <dd><a href="/user/info/$!{user.id}">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            #end
-
-            #if ($user)
-            <li class="layui-nav-item"><a href="logout">注销</a></li>
-            #else
-            <li class="layui-nav-item"><a href="login">登录</a></li>
-            #end
+            <li class="layui-nav-item"><a href="logout">退了</a></li>
         </ul>
+        #else
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item"><a href="login">登录</a></li>
+        </ul>
+        #end
     </div>
 
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
-            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">所有商品</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">列表一</a></dd>
-                        <dd><a href="javascript:;">列表二</a></dd>
-                        <dd><a href="javascript:;">列表三</a></dd>
-                        <dd><a href="">超链接</a></dd>
+                    <a class="" href="javascript:;">所有简历</a>
+                    <dl class="layui-nav-child" id="page">
+                        <dd><a href="javascript:;" id="page1" onclick="c(1,'前端求职简历')">前端求职简历</a></dd>
+                        <dd><a href="javascript:;" id="page2" onclick="c(2,'java WEB求职简历')">java WEB求职简历</a></dd>
+                        <dd><a href="javascript:;" id="page3" onclick="c(3,'Android求职简历')">Android求职简历</a></dd>
+                        <dd><a href="javascript:;" id="page4" onclick="c(4,'全栈求职简历')">全栈求职简历</a></dd>
+                        <dd><a href="javascript:;" id="page5" onclick="c(5,'PHP求职简历')">PHP求职简历</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">解决方案</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">列表一</a></dd>
-                        <dd><a href="javascript:;">列表二</a></dd>
-                        <dd><a href="">超链接</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item"><a href="">云市场</a></li>
-                <li class="layui-nav-item"><a href="">发布商品</a></li>
             </ul>
         </div>
     </div>
-
     <div class="layui-body">
-        <!-- 内容主体区域 -->
-        <div style="padding: 15px;">内容主体区域</div>
+        <div class="layui-tab" lay-filter="docDemoTabBrief" lay-allowClose="true">
+            <ul class="layui-tab-title" id="title">
+                <li lay-id="title1" class="layui-this">前端求职简历</li>
+
+            </ul>
+            <div class="layui-tab-content" id="show">
+                <div class="layui-tab-item layui-show">
+                    <iframe src="form" lay-id="tab1" frameborder="0" class="layadmin-iframe"></iframe>
+                </div>
+            </div>
+        </div>
     </div>
+
 
     <div class="layui-footer">
         <!-- 底部固定区域 -->
-        © layui.com - 底部固定区域
+        © licker
     </div>
 </div>
-<script src="/js/layui.js"></script>
+<script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
 <script>
     //JavaScript代码区域
-    layui.use('element', function(){
+    layui.use(['element', 'form'], function () {
         var element = layui.element;
+        var form = layui.form;
+        form.on('submit(formDemo)', function (data) {
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
 
     });
 </script>
+<script type="text/javascript">
+    layui.use('element', function(){
+        var element = layui.element;
+        //一些事件监听
+        element.on('nav(test)', function(elem){
+            console.log(elem); //得到当前点击的DOM对象
+        });
+    });
+    function c(id, text) {
+        // layui.use('element', function(){
+        //     var dataid = $(this);
+        //
+        //     //这时会判断右侧.layui-tab-title属性下的有lay-id属性的li的数目，即已经打开的tab项数目
+        //     if ($(".layui-tab-title li[lay-id]").length <= 0) {
+        //         //如果比零小，则直接打开新的tab项
+        //         active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"),dataid.attr("data-title"));
+        //     } else {
+        //         //否则判断该tab项是否以及存在
+        //
+        //         var isData = false; //初始化一个标志，为false说明未打开该tab项 为true则说明已有
+        //         $.each($(".layui-tab-title li[lay-id]"), function () {
+        //             //如果点击左侧菜单栏所传入的id 在右侧tab项中的lay-id属性可以找到，则说明该tab项已经打开
+        //             if ($(this).attr("lay-id") == dataid.attr("data-id")) {
+        //                 isData = true;
+        //             }
+        //         })
+        //         if (isData == false) {
+        //             //标志为false 新增一个tab项
+        //             active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"),dataid.attr("data-title"));
+        //         }
+        //     }
+        //     //最后不管是否新增tab，最后都转到要打开的选项页面上
+        //     active.tabChange(dataid.attr("data-id"));
+              var element = layui.element;
+              //一些事件监听
+                element.tabAdd('docDemoTabBrief', {
+                  title: text
+                  ,content: '<div class="layui-this layui-tab-item layui-show" lay-id=\''+id+'\'><iframe src="form" frameborder="0" class="layadmin-iframe"></iframe></div>' //支持传入html
+                  ,id: 'title'+id
+                });
+            // });
+        }
+</script>
+
+
 </body>
 </html>
