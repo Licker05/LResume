@@ -83,9 +83,10 @@
         $.ajax({
             url:"/resumeedit",
             type:"post",
-            date:data,
+            data:$("form").serialize(),
             success:function(data,status,response){
                 console.log(data,status,response);
+                console.log($("form").serialize());
             }
         })
     }
@@ -131,13 +132,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label">开始时间</label>
             <div class="layui-input-inline">
-                <input  type="text" name="starttime" required lay-verify="required"
+                <input  type="text" name="jobstarttime" required lay-verify="required"
                         placeholder="yyyy-MM-dd"
                         autocomplete="off" class="layui-input TimeEdit">
             </div>
             <label class="layui-form-label">结束时间</label>
             <div class="layui-input-inline">
-                <input  type="text" name="endtime" required lay-verify="required"
+                <input  type="text" name="jobendtime" required lay-verify="required"
                         placeholder="yyyy-MM-dd"
                         autocomplete="off" class="layui-input TimeEdit">
             </div>
@@ -160,7 +161,7 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">工作内容</label>
             <div class="layui-input-block">
-                <textarea name="desc" placeholder="请输入工作内容" class="layui-textarea"></textarea>
+                <textarea name="jobdesc" placeholder="请输入工作内容" class="layui-textarea"></textarea>
             </div>
         </div>
     </div>
@@ -170,13 +171,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label">开始时间</label>
             <div class="layui-input-inline">
-                <input  type="text" name="starttime" required lay-verify="required"
+                <input  type="text" name="edustarttime" required lay-verify="required"
                         placeholder="yyyy-MM-dd"
                         autocomplete="off" class="layui-input TimeEdit">
             </div>
             <label class="layui-form-label">结束时间</label>
             <div class="layui-input-inline">
-                <input  type="text" name="endtime" required lay-verify="required"
+                <input  type="text" name="eduendtime" required lay-verify="required"
                         placeholder="yyyy-MM-dd"
                         autocomplete="off" class="layui-input TimeEdit">
             </div>
