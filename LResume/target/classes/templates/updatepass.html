@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>设置我的密码</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/admin.css" media="all">
+    <script src="/jquery.js"></script>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">修改密码</div>
+                <div class="layui-card-body" pad15>
+
+                    <div class="layui-form" lay-filter="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">当前密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="oldPassword" lay-verify="required" lay-verType="tips" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">新密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="password" lay-verify="pass" lay-verType="tips" autocomplete="off" id="LAY_password" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">6到16个字符</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">确认新密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" name="repassword" lay-verify="repass" lay-verType="tips" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="setmypass">确认修改</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/layui.js"></script>
+<script>
+    function updatepass(data){
+        $.ajax({
+            url:"/user/updatePass",
+            data:{userId:"$!{user.id}",oldPass:$.trim(data.oldPassword),newPass:$.trim(data.repassword)},
+            type:"post",
+            success:function(data){
+                var jsonobject = JSON.parse(data);
+                if(jsonobject.code===-1){
+                    layer.msg(jsonobject.msg);
+                }
+                else if(jsonobject==undefined || jsonobject.code!==0){
+                    layer.msg("修改失败,请检查");
+                }else{
+                    layer.msg('修改成功', {
+                        offset: '15px'
+                        ,icon: 1
+                        ,time: 1000
+                    }, function(){
+                        location.href = '/'; //后台主页
+                    });
+                }
+            }
+        });
+    }
+    layui.use(['element', 'form','laydate'], function () {
+        var element = layui.element;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        form.on('submit(setmypass)', function(obj){
+            var field = obj.field;
+            if(field.password !== field.repassword){
+                return layer.msg('两次密码输入不一致');
+            }
+            //确认密码
+            //请求接口
+            updatepass(field);
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

@@ -15,6 +15,8 @@ public interface UserDAO {
 
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id=#{id}"})
     User selectById(int id);
+    @Select({"select salt from ", TABLE_NAME, " where id=#{id}"})
+    User selectSaltById(int id);
 
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where name=#{name}"})
     User selectByName(String name);

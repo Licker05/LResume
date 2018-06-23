@@ -32,7 +32,7 @@
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="/user/info/$!{user.id}">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
+                    <dd><a href="/user/updatepage">修改密码</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item"><a href="logout">退了</a></li>
@@ -43,6 +43,7 @@
         </ul>
         #end
     </div>
+    #if ($user)
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
@@ -75,12 +76,14 @@
         <!-- 底部固定区域 -->
         © licker
     </div>
+    #end
 </div>
 <script type="text/javascript" src="./jquery.js"></script>
 <script>
     layui.use(['element', 'form'], function () {
         var element = layui.element;
         var form = layui.form;
+
         element.on('nav(test)', function(elem){
             var dataid = $(this);
             if ($(".layui-tab-title li[lay-id]").length <= 0) {

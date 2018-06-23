@@ -114,6 +114,7 @@ public class UserService {
         userInfo.setRemark("暂无备注");
         userInfoDAO.addUserInfo(userInfo);
     }
+
     public User getUserById(int id) {
         return userDAO.selectById(id);
     }
