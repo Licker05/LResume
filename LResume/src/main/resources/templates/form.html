@@ -30,8 +30,8 @@
     <div class="layui-form-item">
         <label class="layui-form-label">性别</label>
         <div class="layui-input-inline">
-            <input type="radio" name="sex" value="男" title="男" checked="">
-            <input type="radio" name="sex" value="女" title="女">
+            <input class="man" type="radio" name="sex" value="男" title="男" checked>
+            <input class="woman" type="radio" name="sex" value="女" title="女">
         </div>
 
         <label class="layui-form-label">政治面貌</label>
@@ -81,15 +81,53 @@
     //JavaScript代码区域
     function updatePass(data) {
         $.ajax({
-            url:"/resumeedit",
+            url:"/setresume",
             type:"post",
             data:$("form").serialize(),
-            success:function(data,status,response){
-                console.log(data,status,response);
-                console.log($("form").serialize());
+            success:function(data){
+                var jsonobject = JSON.parse(data);
+                if(jsonobject.code===1){
+                    layer.msg(jsonobject.msg);
+                }
+                else if(jsonobject==undefined || jsonobject.code!==0){
+                    layer.msg("提交失败失败,请检查");
+                }else{
+                    layer.msg('提交成功', {
+                        offset: '15px'
+                        ,icon: 1
+                        ,time: 1000
+                    });
+                }
             }
         })
     }
+    $(document).ready(function () {
+        $.ajax({
+            url:"/getresume",
+            type:"post",
+            data:{
+                username:"$!{user.name}",
+            },
+            success:function(data){
+                var jsonobject = JSON.parse(data);
+                if(jsonobject.code==0){
+                    document.getElementsByName("name")[0].value=jsonobject.name;
+                    document.getElementsByName("age")[0].value=jsonobject.age;
+                    document.getElementsByName("cellphone")[0].value=jsonobject.telephone;
+                    if(jsonobject.sex=="男"){
+                        $(".man").attr("checked","true");
+                        $(".woman").attr("checked","false");
+                    }else{
+                        $(".man").attr("checked","false");
+                        $(".woman").attr("checked","true");
+                    }
+                    document.getElementsByName("politics")[0].value=jsonobject.politics;
+                    document.getElementsByName("intension")[0].value=jsonobject.intension;
+                    document.getElementsByName("desc")[0].value=jsonobject.desc;
+                }
+            }
+        })
+    })
     layui.use(['element', 'form','laydate'], function () {
         var element = layui.element;
         var form = layui.form;
